@@ -63,15 +63,13 @@ Box.test(res, type = "Ljung-Box")
 # best model by using AIC, BIC values.
 
 auto.arima(ftse, trace = TRUE)
-# From auto arima function it seems the best model is (0,1,0)
+# From auto arima function it seems the best model is (0,1,1)
 mod <- arima(ftse, order = c(0,1,0), seasonal = list(order = c(1,0,0),
                                                      period = 12),
              method = "ML")
 plot(mod$residuals)
 Box.test(mod$residuals, type = "Ljung-Box")
 
-# the P value is less, so it is not the best model, so we will stick to our
-# original model c(1,1,1)
-
-pred <- forecast(fit_ar, h = 200, level = c(99.5))
+# next part is to do the forecasting
+pred <- forecast(mod, h = 200, level = c(99.5))
 plot(pred)
